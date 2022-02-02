@@ -2,12 +2,9 @@ from .models import DialogItem, Question
 from rest_framework import serializers
 
 
-# class StartSerializer(serializers.Serializer):
-#     user_id = serializers.CharField(max_length=64)
-#     message = serializers.CharField(max_length=64)
-
 class DialogSerializer(serializers.ModelSerializer):
-    message = serializers.CharField(max_length=64)
+    user_id = serializers.CharField(max_length=64)
+    message = serializers.CharField(max_length=64, default='')
 
     class Meta:
         model = DialogItem

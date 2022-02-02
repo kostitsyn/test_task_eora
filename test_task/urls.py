@@ -16,15 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from firstapp.views import DialogAPIView, ArticleCreateAPIView, DialogAPIViewSet
+from firstapp.views import DialogAPIViewSet
 
 router = DefaultRouter()
-router.register('dialog', DialogAPIViewSet)
+router.register('', DialogAPIViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/1/', DialogAPIView.as_view()),
-    path('api/2/', ArticleCreateAPIView.as_view()),
-    path('api/3/', include(router.urls)),
+    path('api/', include(router.urls)),
 
 ]
