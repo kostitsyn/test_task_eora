@@ -15,7 +15,7 @@ class User(models.Model):
 
 
 class Question(models.Model):
-    text_question = models.CharField(max_length=512, verbose_name='Текст вопроса')
+    text_question = models.CharField(max_length=512, unique=True, verbose_name='Текст вопроса')
 
     class Meta:
         verbose_name = 'Вопрос'

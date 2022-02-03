@@ -16,7 +16,7 @@ class DialogAPIViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericVi
         {
             "user_id": "1",
             "message": "конечно"
-        }
+        }у
 
     **Пример тела ответа:**
 
@@ -24,11 +24,14 @@ class DialogAPIViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericVi
             "text_question": "У него есть уши?"
         }
     """
-    queryset = DialogItem.objects.all()
+    queryset = DialogItem.objects.select_related('user',
+                                                 'question',
+                                                 'affirmative_answer',
+                                                 'negative_answer').all()
     serializer_class = DialogSerializer
 
     def list(self, request):
-        data = QuestionStep.objects.first()
+        data = QuestionStep.objects.select_related('question').first()
         serailizer = QuestionSerializer(data.question)
         return Response(serailizer.data)
 
@@ -45,9 +48,11 @@ class DialogAPIViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericVi
         if user_response in negative_answers:
             if user.current_stage == 1:
                 user.guessed_cat_count += 1
-                data = QuestionStep.objects.get(step=user.current_stage+1, answer_type='no')
+                data = QuestionStep.objects.select_related('question')\
+                    .get(step=user.current_stage+1, answer_type='no')
             elif user.current_stage == 2:
-                data = QuestionStep.objects.get(step=user.current_stage+1, answer_type='no')
+                data = QuestionStep.objects.select_related('question')\
+                    .get(step=user.current_stage+1, answer_type='no')
                 user.current_stage = 1
                 user.guessed_bread_count += 1
 
@@ -57,12 +62,15 @@ class DialogAPIViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericVi
         if user_response in affirmative_answers:
             if user.current_stage == 1:
                 user.current_stage += 1
-                data = QuestionStep.objects.get(step=user.current_stage, answer_type='yes')
+                data = QuestionStep.objects.select_related('question')\
+                    .get(step=user.current_stage, answer_type='yes')
             elif user.current_stage == 2:
-                data = QuestionStep.objects.get(step=user.current_stage + 1, answer_type='yes')
+                data = QuestionStep.objects.select_related('question')\
+                    .get(step=user.current_stage + 1, answer_type='yes')
                 user.current_stage = 1
                 user.guessed_cat_count += 1
-            answer_obj, created = AffirmativeAnswer.objects.get_or_create(answer=affirmative_answers.index(user_response))
+            answer_obj, created = AffirmativeAnswer.objects\
+                .get_or_create(answer=affirmative_answers.index(user_response))
             DialogItem.objects.create(user_id=user.id, question_id=data.question.id, affirmative_answer=answer_obj)
 
         user.save()
