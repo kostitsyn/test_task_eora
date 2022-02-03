@@ -9,19 +9,6 @@ class TestViewSet(APITestCase):
     def setUp(self):
         self.url = 'http://127.0.0.1:8000/api/'
         self.user = User.objects.create()
-        text_questions = [
-            'Привет! Я помогу отличить кота от хлеба! Объект перед тобой квадратный?',
-            'У него есть уши?',
-            'Это кот, а не хлеб! Не ешь его!',
-            'Это хлеб, а не кот! Ешь его!'
-        ]
-        question_objects = [Question.objects.create(text_question=i) for i in text_questions]
-        QuestionStep.objects.create(question=question_objects[0], step=1)
-        QuestionStep.objects.create(question=question_objects[2], step=2, answer_type='no')
-        QuestionStep.objects.create(question=question_objects[1], step=2, answer_type='yes')
-        QuestionStep.objects.create(question=question_objects[2], step=3, answer_type='yes')
-        QuestionStep.objects.create(question=question_objects[3], step=3, answer_type='no')
-
 
     def test_check_first_answer(self):
         response = self.client.get(self.url)
