@@ -7,7 +7,7 @@
 
 2. Создаём образ на основе Dockerfile:
 
-`docker build -t my_container`
+`docker build -t my_container .`
 
 3.Запускаем контейнер на основе созданного образа:
 
