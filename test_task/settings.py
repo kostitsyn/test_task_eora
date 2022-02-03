@@ -27,6 +27,7 @@ if os.path.exists(os.path.join(BASE_DIR, 'secret.json')):
 else:
     SECRET_KEY = ''
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
