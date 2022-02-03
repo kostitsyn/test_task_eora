@@ -1,1 +1,4 @@
 .idea
+env
+secret2.json
+db.sqlite3
