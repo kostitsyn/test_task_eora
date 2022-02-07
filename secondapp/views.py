@@ -10,6 +10,25 @@ from .constants import ANSWER_TYPE_OPERATOR, ANSWER_TYPE_CORRECT, ANSWER_TYPE_RE
 
 
 class MainAPIView(APIView):
+    """
+    ## API бота.
+    ### ``Принимает на вход число от 0 до 100``
+
+    **Пример тела запроса:**
+
+        {
+            "score": 50
+        }
+
+    **Пример тела ответа:**
+
+        {
+            "action": "переключаю на оператора"
+        }
+
+    ### ``Возможные варианты ответа: 'переключаю на оператора', 'пожалуйста, повторите еще раз', 'ответ'``
+
+    """
     serializer_class = MainSerializer
 
     def post(self, request):
