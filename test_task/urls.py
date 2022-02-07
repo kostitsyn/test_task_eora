@@ -16,8 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from secondapp.views import MainAPIView
+from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', MainAPIView.as_view())
+    path('api/', cache_page(3600)(MainAPIView.as_view()))
 ]
